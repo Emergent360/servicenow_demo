@@ -1,0 +1,8 @@
+---
+
+- name: "Launch YUM check update"
+  hosts: all
+  gather_facts: yes
+
+  roles:
+  - launch_yum_check_update
