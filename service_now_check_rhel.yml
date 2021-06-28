@@ -1,4 +1,5 @@
-- name: "Check RHEL security packages"
+---
+- name: Check RHEL security packages
   hosts: all
   gather_facts: yes
   vars:
@@ -6,7 +7,7 @@
     dnf_security: true
 
   tasks:
-  - name: Check update for security
+  - name: Check RHEL packages for security
     command: /bin/dnf check-update --security
     args:
       warn: no
