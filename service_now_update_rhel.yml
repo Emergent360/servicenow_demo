@@ -1,5 +1,5 @@
 ---
-- name: Deploy banner
+- name: Update packages for security
   hosts: all
   connection: network_cli
   gather_facts: false
@@ -8,43 +8,42 @@
     dnf_security: true
 
   tasks:
+  - name: Update RHEL packages for security
+    command: /bin/dnf -y update --security
+    args:
+      warn: no
+    become: yes
+    register: dnf_update
+    failed_when: dnf_update.rc != 0
+    until: dnf_update is not failed
+    retries: 5
+    when: not dnf_check | bool and dnf_security | bool
+  
+  - debug:
+      msg: "{{ incident_num }}"
 
-    - name: Update RHEL packages for security
-      command: /bin/dnf -y update --security
-      args:
-        warn: no
-      become: yes
-      register: dnf_update
-      failed_when: dnf_update.rc != 0
-      until: dnf_update is not failed
-      retries: 5
-      when: not dnf_check | bool and dnf_security | bool
-    
-    - debug:
-        msg: "{{ incident_num }}"
+  - name: Resolve incident
+    snow_record:
+      username: "{{ snow_username }}"
+      password: "{{ snow_password }}"
+      instance: "{{ snow_instance }}"
+      state: present
+      table: incident
+      number: "{{ incident_num }}"
+      data:
+        state: 6
+        comments: "Package update completed, marking resolved"
+    when: incident_num is defined
 
-    - name: Resolve incident
-      snow_record:
-        username: "{{ snow_username }}"
-        password: "{{ snow_password }}"
-        instance: "{{ snow_instance }}"
-        state: present
-        table: incident
-        number: "{{ incident_num }}"
-        data:
-          state: 6
-          comments: "Package update completed, marking resolved"
-      when: incident_num is defined
-
-    - name: Close incident
-      snow_record:
-        username: "{{ snow_username }}"
-        password: "{{ snow_password }}"
-        instance: "{{ snow_instance }}"
-        number: "{{ incident_num }}"
-        state: present
-        table: incident
-        data:
-          state: 7
-          comments: "Package update completed, closing ticket"
-      when: incident_num is defined
+  - name: Close incident
+    snow_record:
+      username: "{{ snow_username }}"
+      password: "{{ snow_password }}"
+      instance: "{{ snow_instance }}"
+      number: "{{ incident_num }}"
+      state: present
+      table: incident
+      data:
+        state: 7
+        comments: "Package update completed, closing ticket"
+    when: incident_num is defined
