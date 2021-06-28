@@ -29,7 +29,7 @@
       state: present
       table: incident
       data:
-        short_description: "SECURITY COMPLIANCE - Package updates needed on {{inventory_hostname}}"
+        short_description: "SECURITY COMPLIANCE - RHEL Package updates needed on {{inventory_hostname}}"
         severity: 3
         priority: 2
         caller_id: "System Administrator"
