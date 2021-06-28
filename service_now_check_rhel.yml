@@ -1,6 +1,9 @@
 - name: "Check RHEL security packages"
   hosts: all
   gather_facts: yes
+  vars:
+    dnf_check: true
+    dnf_security: true
 
   roles:
   - update_rhel_packages
