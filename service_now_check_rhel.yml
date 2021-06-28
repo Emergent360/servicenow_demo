@@ -1,0 +1,25 @@
+- name: "Check RHEL security packages"
+  hosts: all
+  gather_facts: yes
+
+  roles:
+  - update_rhel_packages
+
+  tasks:
+  - name: Create new incident
+    snow_record:
+      username: "{{ snow_username }}"
+      password: "{{ snow_password }}"
+      instance: "{{ snow_instance }}"
+      state: present
+      table: incident
+      data:
+        short_description: "SECURITY COMPLIANCE - Package updates needed on {{inventory_hostname}}"
+        severity: 3
+        priority: 2
+        caller_id: "System Administrator"
+        comments: "--------\n SECURITY COMPLIANCE \n--------\n Updates needed on {{inventory_hostname}}"      
+    register: snow_var
+    delegate_to: localhost
+    when: check_update.rc == 100
+
