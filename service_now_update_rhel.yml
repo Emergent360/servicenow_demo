@@ -34,6 +34,7 @@
       data:
         state: 6
         comments: "Package update completed, marking resolved"
+    delegate_to: localhost
     when: incident_num is defined
 
   - name: Close incident
@@ -47,4 +48,5 @@
       data:
         state: 7
         comments: "Package update completed, closing ticket"
+    delegate_to: localhost
     when: incident_num is defined
