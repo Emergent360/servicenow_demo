@@ -8,6 +8,9 @@
   roles:
   - update_rhel_packages
 
+  debug:
+    var: check_update
+
   tasks:
   - name: Create new incident
     snow_record:
