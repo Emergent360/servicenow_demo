@@ -8,7 +8,7 @@
   roles:
   - update_rhel_packages
 
-  debug:
+  - debug:
     var: check_update
 
   tasks:
