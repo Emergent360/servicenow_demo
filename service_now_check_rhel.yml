@@ -2,6 +2,8 @@
 - name: Check RHEL security packages
   hosts: all
   gather_facts: yes
+  collections:
+    - servicenow.servicenow
   vars:
     dnf_check: true
     dnf_security: true
