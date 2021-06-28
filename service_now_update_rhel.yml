@@ -3,6 +3,9 @@
   hosts: all
   connection: network_cli
   gather_facts: false
+  vars:
+    dnf_check: false
+    dnf_security: true
 
   tasks:
 
