@@ -21,6 +21,9 @@
     when: not dnf_check | bool and dnf_security | bool
   
   - debug:
+      msg: "{{ extra_vars }}"
+
+  - debug:
       msg: "{{ incident_num }}"
 
   - name: Resolve incident
