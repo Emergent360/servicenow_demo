@@ -20,18 +20,6 @@
     retries: 5
     when: not dnf_check | bool and dnf_security | bool
   
-  - name: Display all variables/facts known for a host
-    debug:
-      var: hostvars[inventory_hostname]
-
-  - name: debug extra vars
-    debug:
-      msg: "{{ extra_vars }}"
-
-  - name: debug incident_num
-    debug:
-      msg: "{{ incident_num }}"
-
   - name: Resolve incident
     snow_record:
       username: "{{ snow_username }}"
