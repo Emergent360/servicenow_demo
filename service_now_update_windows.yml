@@ -11,11 +11,12 @@
     win_updates:
       category_names: DefinitionUpdates
       state: installed
-    register: check_update
-    failed_when: check_update.failed | bool
-    changed_when: check_update.found_update_count > 0
+    register: apply_update
+    #failed_when: apply_update.failed | bool
+    changed_when: apply_update.found_update_count > 0
     retries: 5
-  
+    until: apply_update is not failed
+    
   - name: debug incident_num
     debug:
       var: incident_num
