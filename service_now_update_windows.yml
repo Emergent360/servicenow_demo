@@ -1,0 +1,49 @@
+---
+- name: Update Windows security packages 
+  hosts: all
+  gather_facts: yes
+  collections:
+    - servicenow.servicenow
+  vars:
+
+  tasks:
+  - name: Update Windows packages for security
+    win_updates:
+      category_names: DefinitionUpdates
+      state: installed
+    register: check_update
+    failed_when: check_update.failed | bool
+    changed_when: check_update.found_update_count > 0
+    retries: 5
+  
+  - name: debug incident_num
+    debug:
+      var: incident_num
+      
+  - name: Resolve incident
+    snow_record:
+      username: "{{ snow_username }}"
+      password: "{{ snow_password }}"
+      instance: "{{ snow_instance }}"
+      state: present
+      table: incident
+      number: "{{ incident_num }}"
+      data:
+        state: 6
+        comments: "Package update completed, marking resolved"
+    delegate_to: localhost
+    when: incident_num is defined
+
+  - name: Close incident
+    snow_record:
+      username: "{{ snow_username }}"
+      password: "{{ snow_password }}"
+      instance: "{{ snow_instance }}"
+      number: "{{ incident_num }}"
+      state: present
+      table: incident
+      data:
+        state: 7
+        comments: "Package update completed, closing ticket"
+    delegate_to: localhost
+    when: incident_num is defined
