@@ -12,11 +12,11 @@
       category_names: DefinitionUpdates
       state: installed
     register: apply_update
-    #failed_when: apply_update.failed | bool
+    failed_when: apply_update.failed | bool
     changed_when: apply_update.found_update_count > 0
     retries: 5
     until: apply_update is not failed
-    
+
   - name: debug incident_num
     debug:
       var: incident_num
