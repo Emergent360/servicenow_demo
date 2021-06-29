@@ -20,6 +20,10 @@
     retries: 5
     when: not dnf_check | bool and dnf_security | bool
   
+  - name: debug incident_num
+    debug:
+      var: incident_num
+      
   - name: Resolve incident
     snow_record:
       username: "{{ snow_username }}"
