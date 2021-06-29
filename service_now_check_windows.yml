@@ -16,10 +16,6 @@
 #    changed_when: check_update.found_update_count > 0
     retries: 5
 
-  - name: debug check update
-    debug:
-      var: check_update
-
   - name: Create new incident
     snow_record:
       username: "{{ snow_username }}"
