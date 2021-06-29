@@ -7,7 +7,7 @@
   vars:
 
   tasks:
-  - name: Update Windows packages for security
+  - name: Update Windows definition packages
     win_updates:
       category_names: DefinitionUpdates
       state: installed
