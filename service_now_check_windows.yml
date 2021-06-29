@@ -12,8 +12,8 @@
       category_names: SecurityUpdates
       state: searched
     register: check_update
-    failed_when: check_update.rc == 1
-    changed_when: check_update.found_update > 0
+#    failed_when: check_update.rc == 1
+#    changed_when: check_update.found_update > 0
     retries: 5
 
   - name: debug check update
